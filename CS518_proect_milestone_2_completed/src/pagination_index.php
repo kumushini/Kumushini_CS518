@@ -2,7 +2,7 @@
 
 
 $page_number = isset($_GET['page']) ? (int)$_GET['page'] :1;
-$per_page_count = isset($_GET['perpage']) && $_GET['perpage']<=50 ? (int)$_GET['perpage'] :10;
+$per_page_count = isset($_GET['perpage']) ? (int)$_GET['perpage'] :10;
 
 
 require_once 'es_config.php';
@@ -21,8 +21,8 @@ if(isset($_GET['searchterm'])){
        
         
         $json_ = '{
-        	"from":0,
-        	"size":1000,
+        	"from": '.((($page_number-1)*$per_page_count)+1).',
+		"size": '.$per_page_count.',
   		"query": {
   			"bool":{
   				"should":[
@@ -103,10 +103,10 @@ else{
   		"query": {
     			"match_phrase": {
     			"text": "information processing in basic and applied science"}}}';
-
+	//$from_num = ($page_number-1)*$per_page_count+1;
 	$json_ = '{
-		"from": 0,
-		"size": 1000,
+		"from": '.((($page_number-1)*$per_page_count)+1).',
+		"size": '.$per_page_count.',
   		"query": {
   			"bool":{
   				"should":[
@@ -203,28 +203,13 @@ else{
                     <a class="nav-link" href="./../index.php">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Content</a>
+                    <a class="nav-link" href="#">Contact</a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="./src/logout.php">Sign Out</a>
-                </li> -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action 1</a>
-                        <a class="dropdown-item" href="#">Action 2</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Action 3</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+               
+                
+                
             </ul>
-             <form class="input-group input-group-lg" action="pagination.php" method="get" autocomplete="off">
+             <form class="input-group input-group-lg" action="pagination_index.php" method="get" autocomplete="off">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchterm">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
             </form> 
@@ -278,7 +263,7 @@ else{
 			<table class = "table">
 			<tr>
 			<td>
-			<a href="search_summary.php?doc_id=<?php echo$r['_id'];$_SESSION['curr_page']=$page_number;?>"><?php if(!empty($r['highlight']['title'])){echo($r['highlight']['title'][0]);}else{echo $r['_source']['title'];}?>
+			<a href="search_summary.php?searchterm=<?php echo $searchterm;?>&doc_id=<?php echo$r['_id'];$_SESSION['curr_page']=$page_number;?>"><?php if(!empty($r['highlight']['title'])){echo($r['highlight']['title'][0]);}else{echo $r['_source']['title'];}?>
 			</a>
 			</td></tr>	
         		</table>            
@@ -290,30 +275,30 @@ else{
         <nav aria-label="Page navigation example">
   		<ul class="pagination">
   		    	<li class="<?php if (($pagenumber_fast_prev + 1) < $page_number){ echo "page-item";}else{echo "page-item disabled";}?>">
-      				<a class="page-link" href="pagination.php?page=<?php echo $pagenumber_fast_prev;?>perpage=<?php echo "10";?>" aria-label="Previous" aria-disabled=<?php if(((int)($output_n/10)) < $page_number){?>"true"<?php } ?>>fast prev
+      				<a class="page-link" href="pagination_index.php?page=<?php echo $pagenumber_fast_prev;?>&perpage=<?php echo "10";?>&searchterm=<?php echo $searchterm;?>" aria-label="Previous" aria-disabled=<?php if(((int)($output_n/10)) < $page_number){?>"true"<?php } ?>>fast prev
         				<span aria-hidden="true">&laquo;</span>
         				<span class="sr-only">Previous</span>
       				</a>
     			</li>
     			<li class="<?php if ($pagenumber_prev < $page_number){ echo "page-item";}else{echo "page-item disabled";}?>">
-      				<a class="page-link" href="pagination.php?page=<?php echo $pagenumber_prev;?>perpage=<?php echo "10";?>" aria-label="Previous" aria-disabled=<?php if(((int)($output_n/10))+1 < $page_number){?>"true"<?php } ?>>prev
+      				<a class="page-link" href="pagination_index.php?page=<?php echo $pagenumber_prev;?>&perpage=<?php echo "10";?>&searchterm=<?php echo $searchterm;?>" aria-label="Previous" aria-disabled=<?php if(((int)($output_n/10))+1 < $page_number){?>"true"<?php } ?>>prev
         				<span aria-hidden="true">&laquo;</span>
         				<span class="sr-only">Previous</span>
       				</a>
     			</li>
     			
     			
-    			<li class="page-item"><a class="page-link" href="pagination.php?page=<?php echo "1";?>perpage=<?php echo "10";?>">1</a></li>
+    			<li class="page-item"><a class="page-link" href="pagination_index.php?page=<?php echo "1";?>&perpage=<?php echo "10";?>&searchterm=<?php echo $searchterm;?>">1</a></li>
 
 
-    			<li class="<?php if (((int)($output_n/10)) > $page_number){ echo "page-item";}else{echo "page-item disabled";}?>">
-      				<a class="page-link" href="pagination.php?page=<?php echo $pagenumber_next;?>perpage=<?php echo "10";?>" aria-label="Next" aria-disabled=<?php if(((int)($output_n/10)) < $page_number){?>"true"<?php } ?>>next
+    			<li class="<?php if (((int)($output_n/10))+1 > $page_number){ echo "page-item";}else{echo "page-item disabled";}?>">
+      				<a class="page-link" href="pagination_index.php?page=<?php echo $pagenumber_next;?>&perpage=<?php echo "10";?>&searchterm=<?php echo $searchterm;?>" aria-label="Next" aria-disabled=<?php if(((int)($output_n/10)) < $page_number){?>"true"<?php } ?>>next
         				<span aria-hidden="true">&raquo;</span>
         				<span class="sr-only">Next</span>
       				</a>
     			</li>
     			<li class="<?php if (((int)($output_n/10)) >= ($page_number+1)){ echo "page-item";}else{echo "page-item disabled";}?>">
-      				<a class="page-link" href="pagination.php?page=<?php echo $pagenumber_fast_next;?>perpage=<?php echo "10";?>" aria-label="Next">fast next
+      				<a class="page-link" href="pagination_index.php?page=<?php echo $pagenumber_fast_next;?>&perpage=<?php echo "10";?>&searchterm=<?php echo $searchterm;?>" aria-label="Next">fast next
         				<span aria-hidden="true">&raquo;</span>
         				<span class="sr-only">Next</span>
       				</a>

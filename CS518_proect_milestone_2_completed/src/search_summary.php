@@ -5,7 +5,7 @@ require_once 'es_config.php';
 session_start();
 
 $curr_page = isset($_SESSION['curr_page']) ? $_SESSION['curr_page'] :1;
-echo $curr_page;
+//echo $curr_page;
 //$response_ =$_SESSION['response'];
 
 
@@ -17,8 +17,11 @@ $response_ = unserialize($_SESSION['response']);
  
  if (!empty($_GET['doc_id']))
  	//session_start();
+ 	
 	$doc_id = $_GET['doc_id']; 
-	//$searchterm = 'science';
+	//echo $doc_id;
+	$searchterm = $_GET['searchterm'];
+	//echo $searchterm;
 
 	   $params = [
 		'index' => 'metadata',
@@ -72,7 +75,7 @@ $response_ = unserialize($_SESSION['response']);
 <br> 
 
 <!-- <button type="button" class="btn btn-secondary"><a href ="search_.php">Previous page</a></button>-->
-<a class="btn btn-secondary" href="pagination.php?page=<?php echo $curr_page;?>perpage=<?php echo "10";?>" role="button">Previous page</a>
+<a class="btn btn-secondary" href="pagination_index.php?page=<?php echo $curr_page;?>&perpage=<?php echo "10";?>&searchterm=<?php echo $searchterm;?>" role="button">Previous page</a>
 
 <br>
 <br> 
