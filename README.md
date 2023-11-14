@@ -1,12 +1,12 @@
 ## This is a search engine built for searching electronic thesis and dissertations.
 
-** Tools and technologes
-   - Php
+** Tools and technologes -
+   - Php,
      
-   - MysQl
+   - MysQl,
      
-   - Elasticsearch
+   - Elasticsearch,
      
-   - Kibana
+   - Kibana,
      
-   - Apache 
+   - Apache. 
