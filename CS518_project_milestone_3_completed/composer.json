@@ -1,0 +1,16 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.8",
+        "pragmarx/google2fa": "^8.0",
+        "elasticsearch/elasticsearch": "^7.0",
+        "tigitz/php-spellchecker": "^0.6.0",
+        "slim/slim": "^2.6",
+        "orhanerday/open-ai": "^5.0",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
